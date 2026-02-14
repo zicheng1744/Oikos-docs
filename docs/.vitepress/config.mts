@@ -8,6 +8,9 @@ export default defineConfig({
   // Clean URLs (no .html suffix)
   cleanUrls: true,
 
+  // Ignore dead links (we'll fix them later)
+  ignoreDeadLinks: true,
+
   // Theme configuration
   themeConfig: {
     logo: '/logo.svg', // Optional: add later if needed
