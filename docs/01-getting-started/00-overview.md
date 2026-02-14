@@ -278,7 +278,7 @@ Oikos 支持三种运行模式，适应不同的研究和测试需求：
 **用途**: 快速验证端到端流程
 
 ```bash
-bash recipes/TEMPLATE/run_chat.sh
+python -m oikos.cli chat --recipe TEMPLATE
 ```
 
 **特点**:
@@ -296,7 +296,7 @@ bash recipes/TEMPLATE/run_chat.sh
 **用途**: 冷启动、稳定排名、观察演化
 
 ```bash
-bash recipes/TEMPLATE/run_train.sh --max_episodes 50
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 50
 ```
 
 **特点**:
@@ -320,7 +320,7 @@ bash recipes/TEMPLATE/run_train.sh --max_episodes 50
 **用途**: 机制对比、基准测试、论文实验
 
 ```bash
-bash recipes/TEMPLATE/run_test.sh --max_episodes 100
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 100
 ```
 
 **特点**:
@@ -369,7 +369,7 @@ bash recipes/TEMPLATE/run_test.sh --max_episodes 100
 
 一条命令完成全流程：
 ```bash
-bash recipes/TEMPLATE/run_test.sh
+python -m oikos.cli test --recipe TEMPLATE
 ```
 自动执行：
 1. 启动全链条服务（API / NVWA / Retrieval / Evaluator）

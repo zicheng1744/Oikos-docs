@@ -58,7 +58,7 @@ python scripts/check_installation.py
 ## 6. 运行一次最小测试
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 1
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 1
 ```
 
 如果成功，输出会在 `exp/test/<run_id>/`。
@@ -71,7 +71,7 @@ STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 1
 - 本地 host 模式可先用：
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 1
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 1
 ```
 
 ### 2) API Key 已配置但仍报鉴权错误

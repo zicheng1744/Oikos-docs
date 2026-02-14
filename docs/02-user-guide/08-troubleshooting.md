@@ -26,7 +26,7 @@ bash scripts/start_fullchain.sh restart
 若你用 host 模式：
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 1
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 1
 ```
 
 并确认 YAML：`runtime.workspace_backend: host`。

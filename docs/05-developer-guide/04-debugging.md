@@ -77,9 +77,11 @@ import ipdb; ipdb.set_trace()
             "name": "Python: Run Experiment",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/run_experiment.py",
+            "program": "${workspaceFolder}/cli.py",
             "args": [
-                "--config", "recipes/TEMPLATE/conf/test_config.yaml",
+                "run",
+                "--mode", "test",
+                "--recipe", "TEMPLATE",
                 "--max_episodes", "5"
             ],
             "console": "integratedTerminal",
@@ -120,8 +122,8 @@ import ipdb; ipdb.set_trace()
 ### 4. PyCharm 调试器
 
 **启动调试**:
-1. 右键点击 `run_experiment.py`
-2. 选择 "Debug 'run_experiment'"
+1. 右键点击 `cli.py`
+2. 选择 "Debug 'cli'"
 3. 在代码中设置断点 (点击行号)
 
 **调试面板**:
@@ -193,7 +195,7 @@ python -c "import yaml; print(yaml.safe_load(open('recipes/TEMPLATE/conf/test_co
 
 **2. 打印加载的配置**
 ```python
-# bin/run_experiment.py
+# cli.py / 内部执行器
 
 from core.config_manager import ConfigManager
 
@@ -338,7 +340,7 @@ class YourRankingPlugin(BasePlugin, AgentEvalInterface):
 
 **3. 检查AgentRanks是否传递**
 ```python
-# bin/run_experiment.py
+# cli.py / 内部执行器
 
 for episode in range(max_episodes):
     # Phase 6: 更新排名
@@ -458,7 +460,7 @@ def setup_logging():
 
 **使用**:
 ```python
-# bin/run_experiment.py
+# cli.py / 内部执行器
 
 from core.logging_config import setup_logging
 setup_logging()
@@ -511,10 +513,10 @@ class YourPlugin(BasePlugin, YourInterface):
 **命令行**:
 ```bash
 # 运行时设置日志级别
-python bin/run_experiment.py --log-level DEBUG
+python -m oikos.cli run --mode test --recipe TEMPLATE --log-level DEBUG
 
 # 只显示特定模块的日志
-python bin/run_experiment.py --log-module modules.phase5 --log-level DEBUG
+python -m oikos.cli run --mode test --recipe TEMPLATE --log-module modules.phase5 --log-level DEBUG
 ```
 
 **代码**:
@@ -573,7 +575,7 @@ pip install debugpy
 
 **在服务器代码中**:
 ```python
-# bin/run_experiment.py
+# cli.py
 
 import debugpy
 
@@ -644,7 +646,7 @@ with timer("Phase 5 Settlement"):
 **cProfile**:
 ```bash
 # 分析整个程序
-python -m cProfile -s cumulative bin/run_experiment.py > profile.txt
+python -m cProfile -s cumulative -m oikos.cli run --mode test --recipe TEMPLATE > profile.txt
 
 # 查看结果
 cat profile.txt | head -50
@@ -653,7 +655,7 @@ cat profile.txt | head -50
 **示例输出**:
 ```
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000   10.523   10.523 run_experiment.py:1(<module>)
+        1    0.000    0.000   10.523   10.523 cli.py:1(<module>)
        50    0.012    0.000    8.456    0.169 settlement_modules.py:45(settle_episode)
       500    5.234    0.010    5.234    0.010 {built-in method builtins.sum}
 ```
@@ -669,7 +671,7 @@ def settle_episode(self, ...):
     # ... 代码
 
 # 运行
-kernprof -l -v bin/run_experiment.py
+kernprof -l -v -m oikos.cli run --mode test --recipe TEMPLATE
 ```
 
 **示例输出**:
@@ -697,7 +699,7 @@ def settle_episode(self, ...):
     # ... 代码
 
 # 运行
-python -m memory_profiler bin/run_experiment.py
+python -m memory_profiler -m oikos.cli run --mode test --recipe TEMPLATE
 ```
 
 **示例输出**:

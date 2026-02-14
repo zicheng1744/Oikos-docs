@@ -14,7 +14,7 @@
 
 ## 3. 输出管理
 
-- 每次实验使用独立 `--output_dir`
+- 每次实验使用独立 `--output-dir`
 - 保留 `runtime/logs` 与 `overall/*` 全量产物
 - 对重要 run 归档压缩
 
@@ -34,8 +34,8 @@
 ## 6. 最小可复现命令模板
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/my_exp/conf/override.yaml \
-  --output_dir exp/my_exp \
+  --output-dir exp/my_exp \
   --max_episodes 20
 ```

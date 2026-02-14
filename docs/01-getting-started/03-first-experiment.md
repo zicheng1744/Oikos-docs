@@ -61,9 +61,9 @@ EOF_CFG
 
 ```bash
 conda activate holos
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/first_experiment/conf/experiment_config.yaml \
-  --output_dir exp/first_experiment
+  --output-dir exp/first_experiment
 ```
 
 ## 4) 验证这次 run 确实使用了你的数据

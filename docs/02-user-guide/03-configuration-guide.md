@@ -57,7 +57,7 @@ runtime:
 运行：
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/my_exp/conf/override.yaml
 ```
 

@@ -5,7 +5,7 @@
 用途：交互式快速验证。
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_chat.sh --output_dir exp/chat
+python -m oikos.cli chat --recipe TEMPLATE --output-dir exp/chat
 ```
 
 特点：
@@ -18,7 +18,7 @@ STRICT_DOCKER=false bash recipes/TEMPLATE/run_chat.sh --output_dir exp/chat
 用途：多轮训练/演化。
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_train.sh --max_episodes 10 --output_dir exp/train
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 10 --output-dir exp/train
 ```
 
 输出重点：
@@ -32,7 +32,7 @@ STRICT_DOCKER=false bash recipes/TEMPLATE/run_train.sh --max_episodes 10 --outpu
 用途：固定数据上的评估与对比。
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 20 --output_dir exp/test
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 20 --output-dir exp/test
 ```
 
 输出重点：

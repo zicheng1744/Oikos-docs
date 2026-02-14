@@ -2,33 +2,35 @@
 
 本页只描述当前仓库已验证可用的运行方式。
 
-## 1. 三个入口脚本
+## 1. 统一入口（CLI）
+
+推荐使用统一 CLI 入口：
 
 ```text
-recipes/TEMPLATE/run_chat.sh
-recipes/TEMPLATE/run_train.sh
-recipes/TEMPLATE/run_test.sh
+python -m oikos.cli chat  --recipe TEMPLATE
+python -m oikos.cli train --recipe TEMPLATE
+python -m oikos.cli test  --recipe TEMPLATE
 ```
 
-三个脚本都会自动：启动 fullchain → 执行实验 → 写入 run 目录 → 停止服务。
+CLI 会自动：启动 fullchain → 执行实验 → 写入 run 目录 → 停止服务。
 
-## 2. 通用参数（脚本层）
+## 2. 通用参数（CLI）
 
-- `--output_dir <dir>`
-- `--run_id <id>`
-- 其他参数会透传给 `python -m oikos.bin.run_experiment`
+- `--output-dir <dir>`
+- `--run-id <id>`
+- 其他参数会透传给内部执行器（无需直接调用）
 
 示例：
 
 ```bash
 # chat（交互式）
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_chat.sh --output_dir exp/chat
+python -m oikos.cli chat --recipe TEMPLATE --output-dir exp/chat
 
 # train
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_train.sh --max_episodes 10 --output_dir exp/train
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 10 --output-dir exp/train
 
 # test
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 20 --output_dir exp/test
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 20 --output-dir exp/test
 ```
 
 ## 3. 配置文件覆盖
@@ -39,12 +41,14 @@ STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 20 --output
 - `recipes/TEMPLATE/conf/economic.yaml`
 - `recipes/TEMPLATE/conf/<mode>_config.yaml`
 
-可以追加覆盖文件：
+可以改用 `run` 命令追加覆盖文件：
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli run --mode test \
+  --config recipes/TEMPLATE/conf/modules.yaml \
+  --config recipes/TEMPLATE/conf/economic.yaml \
   --config recipes/my_experiment/conf/override.yaml \
-  --output_dir exp/my_experiment
+  --output-dir exp/my_experiment
 ```
 
 建议覆盖文件只写“要改动的键”。
@@ -84,6 +88,6 @@ bash scripts/start_fullchain.sh restart
 
 ## 7. 注意事项
 
-- 本地无 Docker 时请显式使用 `STRICT_DOCKER=false`。
-- `run_chat.sh` 为交互式；输入 `/exit` 可退出。
+- 本地无 Docker 时，请在 YAML 中设置 `runtime.workspace_backend: host`。
+- chat 模式为交互式；输入 `/exit` 可退出。
 - 当前没有官方 `compare_experiments.py` 脚本。

@@ -315,10 +315,12 @@ def test_full_experiment_e2e():
     # 2. 运行实验
     result = subprocess.run(
         [
-            "python", "bin/run_experiment.py",
+            "python", "-m", "oikos.cli", "run", "--mode", "test",
+            "--config", "recipes/TEMPLATE/conf/modules.yaml",
+            "--config", "recipes/TEMPLATE/conf/economic.yaml",
             "--config", test_config,
             "--max_episodes", "5",
-            "--output_dir", output_dir
+            "--output-dir", output_dir
         ],
         capture_output=True,
         text=True,

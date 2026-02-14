@@ -9,19 +9,19 @@ core/            # 运行框架与基础能力（配置、插件基类、注册�
 interfaces/      # 抽象接口层（各 Phase 的契约）
 modules/         # 各 Phase 的可替换实现
 infrastructure/  # 基础设施与运行依赖（如 docker、agent infra）
-utils/           # 服务与工具实现（api/nvwa/retrieval/evaluator、metrics 等）
-bin/             # CLI 入口（run_experiment）
-recipes/         # 实验脚本与配置模板
+services/        # 运行时服务（api/nvwa/retrieval/evaluator）
+utils/           # 纯工具实现（logger/clients/metrics/tools 等）
+recipes/         # 配置模板与兼容 wrapper
 exp/             # 运行产物
 ```
 
 ## 2. 运行入口
 
-- 推荐入口：
-  - `recipes/TEMPLATE/run_chat.sh`
-  - `recipes/TEMPLATE/run_train.sh`
-  - `recipes/TEMPLATE/run_test.sh`
-- Python 入口：`python -m oikos.bin.run_experiment`（通常由脚本调用）
+- 推荐入口（统一 CLI）：
+  - `python -m oikos.cli chat --recipe TEMPLATE`
+  - `python -m oikos.cli train --recipe TEMPLATE`
+  - `python -m oikos.cli test --recipe TEMPLATE`
+- `recipes/TEMPLATE/run_*.sh` 仅兼容 wrapper，内部委托 CLI。
 
 ## 3. 服务拓扑（脚本自动管理）
 

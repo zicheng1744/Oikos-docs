@@ -27,13 +27,13 @@
 ## 4. 运行模板
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/my_exp/conf/mech_a.yaml \
-  --output_dir exp/mech_a
+  --output-dir exp/mech_a
 
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/my_exp/conf/mech_b.yaml \
-  --output_dir exp/mech_b
+  --output-dir exp/mech_b
 ```
 
 ## 5. 注意

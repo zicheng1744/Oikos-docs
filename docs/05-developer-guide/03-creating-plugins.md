@@ -559,7 +559,11 @@ pytest tests/test_phase5/ -v
 ```bash
 # 使用自定义插件运行完整实验
 cd recipes/TEMPLATE
-python ../../bin/run_experiment.py --config conf/test_config.yaml --max_episodes 5
+python -m oikos.cli run --mode test \
+  --config conf/modules.yaml \
+  --config conf/economic.yaml \
+  --config conf/test_config.yaml \
+  --max_episodes 5
 ```
 
 ---

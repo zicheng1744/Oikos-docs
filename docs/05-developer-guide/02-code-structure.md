@@ -18,7 +18,7 @@
 
 ```
 Holos-Oikos-Dev/
-├── bin/                    # 可执行脚本
+├── services/               # 运行时服务
 ├── core/                   # 核心系统
 ├── interfaces/             # 接口定义
 ├── modules/                # 默认实现
@@ -34,7 +34,7 @@ Holos-Oikos-Dev/
 
 | 你想要... | 去哪里 | 示例文件 |
 |---------|-------|---------|
-| 运行实验 | `bin/` | `run_experiment.py` |
+| 运行实验 | `cli.py` | 统一 CLI 入口 |
 | 理解接口 | `interfaces/` | `phase5_settlement/base.py` |
 | 查看实现 | `modules/` | `phase5/settlement_modules.py` |
 | 修改配置 | `recipes/TEMPLATE/conf/` | `test_config.yaml` |
@@ -45,49 +45,23 @@ Holos-Oikos-Dev/
 
 ## 核心模块详解
 
-### 1. bin/ - 可执行脚本
+### 1. CLI 与入口
 
-**职责**: 提供命令行入口
+**职责**: 统一运行入口
 
 ```
-bin/
-├── run_experiment.py       # 主运行脚本 (2766行)
-├── run_chat.sh             # Chat模式启动脚本
-├── run_train.sh            # Train模式启动脚本
-└── run_test.sh             # Test模式启动脚本
+cli.py                      # 主 CLI 入口
+recipes/TEMPLATE/run_*.sh   # 兼容 wrapper（内部委托 CLI）
 ```
 
-**关键文件**:
-- `run_experiment.py`: 实验运行的总控制器
-  - 加载配置
-  - 初始化插件系统
-  - 启动服务
-  - 执行7阶段管道
-  - 收集和保存结果
+**关键说明**:
+- 推荐入口：`python -m oikos.cli <chat|train|test|run> ...`
+- 不建议直接把 `run_experiment.py` 当用户入口。
 
 **示例代码**:
 ```python
-# bin/run_experiment.py (简化版)
-from core.plugin_system import PluginFactory
-from core.config_manager import ConfigManager
-
-def main():
-    # 1. 加载配置
-    config = ConfigManager.load("recipes/TEMPLATE/conf/test_config.yaml")
-
-    # 2. 初始化插件
-    factory = PluginFactory(config)
-
-    # 3. 执行7阶段
-    for phase in range(1, 8):
-        phase_module = factory.get_phase_module(phase)
-        phase_module.execute()
-
-    # 4. 保存结果
-    save_results()
-
-if __name__ == "__main__":
-    main()
+# CLI（简化版）
+# python -m oikos.cli test --recipe TEMPLATE --max_episodes 5
 ```
 
 ---
@@ -490,7 +464,7 @@ cat recipes/TEMPLATE/conf/test_config.yaml | grep -A 10 "phase5_settlement"
 2. **插件加载失败** → `core/plugin_registry.py`
 3. **Phase执行错误** → `modules/phase{N}/`
 4. **接口不匹配** → `interfaces/phase{N}_*/base.py`
-5. **运行脚本问题** → `bin/run_experiment.py`
+5. **运行入口问题** → `cli.py` / `recipes/TEMPLATE/run_*.sh`
 
 **常用调试命令**:
 ```bash

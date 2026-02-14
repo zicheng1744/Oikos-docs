@@ -450,10 +450,18 @@ phase6_feedback:
 **运行对比**:
 ```bash
 # 实验A
-python bin/run_experiment.py --config recipes/exp_a_fixed.yaml --output_dir outputs/exp_a/
+python -m oikos.cli run --mode test \
+  --config recipes/TEMPLATE/conf/modules.yaml \
+  --config recipes/TEMPLATE/conf/economic.yaml \
+  --config recipes/exp_a_fixed.yaml \
+  --output-dir outputs/exp_a/
 
 # 实验B
-python bin/run_experiment.py --config recipes/exp_b_auction_rank.yaml --output_dir outputs/exp_b/
+python -m oikos.cli run --mode test \
+  --config recipes/TEMPLATE/conf/modules.yaml \
+  --config recipes/TEMPLATE/conf/economic.yaml \
+  --config recipes/exp_b_auction_rank.yaml \
+  --output-dir outputs/exp_b/
 
 # 对比结果
 python scripts/compare_experiments.py outputs/exp_a/ outputs/exp_b/
@@ -507,7 +515,10 @@ runtime:
 ```bash
 export NUM_AGENTS=20
 export API_PORT=8080
-python bin/run_experiment.py --config config.yaml
+python -m oikos.cli run --mode test \
+  --config recipes/TEMPLATE/conf/modules.yaml \
+  --config recipes/TEMPLATE/conf/economic.yaml \
+  --config config.yaml
 ```
 
 ---

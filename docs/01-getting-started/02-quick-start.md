@@ -17,13 +17,13 @@ conda activate holos
 ## 2. 运行一个最小 Test
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh --max_episodes 1
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 1
 ```
 
 说明：
-- `run_test.sh` 会自动拉起并停止 fullchain 服务
+- `oikos.cli test` 会自动拉起并停止 fullchain 服务
 - 默认输出根目录是 `exp/test`
-- 本地无 Docker 时，使用 `STRICT_DOCKER=false` + `workspace_backend: host`
+- 本地无 Docker 时，在 YAML 设置 `runtime.workspace_backend: host`
 
 ## 3. 查看输出
 
@@ -84,11 +84,11 @@ PY
 
 ```bash
 # Chat（交互式，会等待输入）
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_chat.sh
+python -m oikos.cli chat --recipe TEMPLATE
 
 # Train
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_train.sh --max_episodes 10
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 10
 ```
 
 注意：
-- `run_chat.sh` 是交互式，不输入内容可能出现 `turns=0`
+- chat 是交互式，不输入内容可能出现 `turns=0`

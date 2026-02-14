@@ -45,16 +45,16 @@ conda activate holos
 #### 步骤 2: 运行 Chat Demo
 
 ```bash
-bash recipes/TEMPLATE/run_chat.sh
+python -m oikos.cli chat --recipe TEMPLATE
 ```
 
 **可选参数**:
 ```bash
 # 自定义输出目录
-bash recipes/TEMPLATE/run_chat.sh --output_dir exp/my_chat
+python -m oikos.cli chat --recipe TEMPLATE --output-dir exp/my_chat
 
 # 自定义 run_id
-bash recipes/TEMPLATE/run_chat.sh --run_id chat-demo-001
+python -m oikos.cli chat --recipe TEMPLATE --run-id chat-demo-001
 ```
 
 #### 步骤 3: 观察执行过程
@@ -252,19 +252,19 @@ ls recipes/TEMPLATE/data/
 
 ```bash
 # 运行 20 个任务
-bash recipes/TEMPLATE/run_test.sh --max_episodes 20
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 20
 ```
 
 **可选参数**:
 ```bash
 # 自定义输出目录和任务数量
-bash recipes/TEMPLATE/run_test.sh \
-  --output_dir exp/test_experiment \
+python -m oikos.cli test --recipe TEMPLATE \
+  --output-dir exp/test_experiment \
   --max_episodes 50 \
-  --run_id test-baseline
+  --run-id test-baseline
 
 # 使用自定义配置文件
-bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/TEMPLATE/conf/my_test_config.yaml \
   --max_episodes 30
 ```
@@ -428,19 +428,19 @@ plt.savefig('success_rate.png')
 
 ```bash
 # 运行 50 轮训练
-bash recipes/TEMPLATE/run_train.sh --max_episodes 50
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 50
 ```
 
 **推荐参数**:
 ```bash
 # 短期训练（快速冷启动）
-bash recipes/TEMPLATE/run_train.sh --max_episodes 20
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 20
 
 # 中期训练（观察演化）
-bash recipes/TEMPLATE/run_train.sh --max_episodes 100
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 100
 
 # 长期训练（稳定状态）
-bash recipes/TEMPLATE/run_train.sh --max_episodes 500
+python -m oikos.cli train --recipe TEMPLATE --max_episodes 500
 ```
 
 #### 步骤 2: 保存 Checkpoint（可选）
@@ -461,7 +461,7 @@ ls exp/train_runs/train-*/checkpoints/
 
 ```bash
 # 从上次停止的地方继续训练
-bash recipes/TEMPLATE/run_train.sh \
+python -m oikos.cli train --recipe TEMPLATE \
   --load_checkpoint exp/train_runs/train-2026-02-14-1230/checkpoints/checkpoint_episode_50.pkl \
   --max_episodes 100
 ```
@@ -541,9 +541,9 @@ cat overall/economic_state.json | jq '.pool_state'
 
 ```bash
 # 使用默认配置运行
-bash recipes/TEMPLATE/run_test.sh \
-  --output_dir exp/comparison/baseline \
-  --run_id baseline \
+python -m oikos.cli test --recipe TEMPLATE \
+  --output-dir exp/comparison/baseline \
+  --run-id baseline \
   --max_episodes 50
 ```
 
@@ -581,10 +581,10 @@ phase5_settlement:
 
 运行实验 B：
 ```bash
-bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/TEMPLATE/conf/performance_based_config.yaml \
-  --output_dir exp/comparison/performance_based \
-  --run_id performance-based \
+  --output-dir exp/comparison/performance_based \
+  --run-id performance-based \
   --max_episodes 50
 ```
 
@@ -845,7 +845,7 @@ data:
 
 ```bash
 # 3. 运行 Demo
-bash recipes/TEMPLATE/run_test.sh --max_episodes 10
+python -m oikos.cli test --recipe TEMPLATE --max_episodes 10
 ```
 
 详见 [数据集准备指南](../../02-user-guide/02-dataset-preparation.md)。
@@ -881,11 +881,11 @@ Demo 运行完成后，您可以：
 ### run_chat.sh 参数
 
 ```bash
-bash recipes/TEMPLATE/run_chat.sh [OPTIONS]
+python -m oikos.cli chat --recipe TEMPLATE [OPTIONS]
 
 OPTIONS:
-  --output_dir DIR    输出目录（默认: exp/chat_runs）
-  --run_id ID         自定义运行 ID（默认: 自动生成）
+  --output-dir DIR    输出目录（默认: exp/chat_runs）
+  --run-id ID         自定义运行 ID（默认: 自动生成）
   --config FILE       配置文件路径（默认: conf/chat_config.yaml）
   --help              显示帮助信息
 ```
@@ -895,11 +895,11 @@ OPTIONS:
 ### run_test.sh 参数
 
 ```bash
-bash recipes/TEMPLATE/run_test.sh [OPTIONS]
+python -m oikos.cli test --recipe TEMPLATE [OPTIONS]
 
 OPTIONS:
-  --output_dir DIR      输出目录（默认: exp/test_runs）
-  --run_id ID           自定义运行 ID（默认: 自动生成）
+  --output-dir DIR      输出目录（默认: exp/test_runs）
+  --run-id ID           自定义运行 ID（默认: 自动生成）
   --max_episodes N      运行任务数量（默认: 10）
   --config FILE         配置文件路径（默认: conf/test_config.yaml）
   --help                显示帮助信息
@@ -910,11 +910,11 @@ OPTIONS:
 ### run_train.sh 参数
 
 ```bash
-bash recipes/TEMPLATE/run_train.sh [OPTIONS]
+python -m oikos.cli train --recipe TEMPLATE [OPTIONS]
 
 OPTIONS:
-  --output_dir DIR          输出目录（默认: exp/train_runs）
-  --run_id ID               自定义运行 ID（默认: 自动生成）
+  --output-dir DIR          输出目录（默认: exp/train_runs）
+  --run-id ID               自定义运行 ID（默认: 自动生成）
   --max_episodes N          训练轮数（默认: 50）
   --config FILE             配置文件路径（默认: conf/train_config.yaml）
   --load_checkpoint FILE    从 checkpoint 恢复（可选）

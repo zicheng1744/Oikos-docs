@@ -55,8 +55,8 @@ PY
 ## 6. 跑一个最小验证
 
 ```bash
-STRICT_DOCKER=false bash recipes/TEMPLATE/run_test.sh \
+python -m oikos.cli test --recipe TEMPLATE \
   --config recipes/my_exp/conf/override.yaml \
   --max_episodes 1 \
-  --output_dir exp/my_exp_check
+  --output-dir exp/my_exp_check
 ```
