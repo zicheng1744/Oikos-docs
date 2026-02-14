@@ -14,7 +14,7 @@ hero:
       link: /03-architecture/01-system-overview
     - theme: alt
       text: GitHub
-      link: https://github.com/USERNAME/Oikos-docs
+      link: https://github.com/zicheng1744/Oikos-docs
 
 features:
   - icon: 🔬

@@ -126,7 +126,7 @@ export default defineConfig({
 
     // Social links
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/USERNAME/Oikos-docs' }
+      { icon: 'github', link: 'https://github.com/zicheng1744/Oikos-docs' }
     ],
 
     // Footer
