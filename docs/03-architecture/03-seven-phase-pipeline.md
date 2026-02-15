@@ -15,3 +15,4 @@
 - 每个阶段会写入 `overall/phase_trace.jsonl`。
 - `conversations/<id>/phase_trace.jsonl` 是按会话切分后的阶段事件。
 - 审计结果在 `overall/economic_audit.json`，核心字段在 `conservation`（而非旧字段 `conservative`）。
+- 默认 recipe 下 Phase 3 采用单 orchestrator 路径（`num_hubs: 1`），优先保证链路稳定和审计一致性。

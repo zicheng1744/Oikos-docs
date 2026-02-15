@@ -69,10 +69,10 @@ python -m oikos.cli chat --recipe TEMPLATE --run-id chat-demo-001
 1️⃣ 启动服务
 [INFO] Starting API Server on port 8000... ✓
 [INFO] Starting NVWA Agent Server on port 10000... ✓
-[INFO] Starting Retrieval Service on port 9000... ✓
-[INFO] Starting Evaluator Service on port 9001... ✓
+[INFO] Starting Retrieval Service on port 10003... ✓
+[INFO] Starting Evaluator Service on port 10002... ✓
 
-2️⃣ 执行 7 阶段管道
+2️⃣ 执行 7 阶段管道（以下为示意日志，实际端口/数值以 run 输出为准；端口冲突时会自动重映射）
 [Phase 1] Sandbox Initialization...
   ├─ Loading configuration
   ├─ Initializing participants (User, Agent, Orchestrator, Platform)
@@ -85,7 +85,7 @@ python -m oikos.cli chat --recipe TEMPLATE --run-id chat-demo-001
   └─ Publishing task to marketplace ✓
 
 [Phase 3] Task Allocation...
-  ├─ Collecting bids from orchestrators (3 bids received)
+  ├─ Collecting bids from orchestrators (default recipe: 1 bid; multi-hub 可扩展)
   ├─ Running first-price auction
   └─ Winner: orchestrator-1 (bid: $85) ✓
 
@@ -113,7 +113,7 @@ python -m oikos.cli chat --recipe TEMPLATE --run-id chat-demo-001
   └─ Circuit breaker check ✓
 
 3️⃣ 保存结果
-[INFO] Results saved to: exp/chat_runs/chat-2026-02-14-1215/
+[INFO] Results saved to: exp/chat/chat-2026-02-14-1215/
 
 4️⃣ 停止服务
 [INFO] Stopping all services...
@@ -131,12 +131,12 @@ python -m oikos.cli chat --recipe TEMPLATE --run-id chat-demo-001
 #### 输出目录结构
 
 ```bash
-cd exp/chat_runs/chat-2026-02-14-1215/
+cd exp/chat/chat-2026-02-14-1215/
 tree -L 3
 ```
 
 ```
-exp/chat_runs/chat-2026-02-14-1215/
+exp/chat/chat-2026-02-14-1215/
 ├── conversations/                          # 会话级数据
 │   └── episode_0__thread_abc123/
 │       ├── summary.json                    # 会话摘要
@@ -275,7 +275,7 @@ python -m oikos.cli test --recipe TEMPLATE \
 
 ```bash
 # 找到最新的运行目录
-cd exp/test_runs/test-2026-02-14-*/
+cd exp/test/test-2026-02-14-*/
 
 # 实时监控 API 日志
 tail -f runtime/logs/main_api_pid_*.log
@@ -294,7 +294,7 @@ Estimated time remaining: 0 minutes
 Total episodes: 20
 Success rate: 95.0%
 Average quality: 0.82
-Results saved to: exp/test_runs/test-2026-02-14-1220/
+Results saved to: exp/test/test-2026-02-14-1220/
 ```
 
 ⏱️ **总时长**: 20-30 分钟（20 个任务）
@@ -306,7 +306,7 @@ Results saved to: exp/test_runs/test-2026-02-14-1220/
 #### 全局指标分析
 
 ```bash
-cd exp/test_runs/test-2026-02-14-1220/
+cd exp/test/test-2026-02-14-1220/
 
 # 查看总体结果
 cat overall/results.json | jq .
@@ -449,7 +449,7 @@ Train 模式会自动保存 checkpoint：
 
 ```bash
 # Checkpoint 保存位置
-ls exp/train_runs/train-*/checkpoints/
+ls exp/train/train-*/checkpoints/
 
 # 输出：
 # checkpoint_episode_10.pkl
@@ -462,7 +462,7 @@ ls exp/train_runs/train-*/checkpoints/
 ```bash
 # 从上次停止的地方继续训练
 python -m oikos.cli train --recipe TEMPLATE \
-  --load_checkpoint exp/train_runs/train-2026-02-14-1230/checkpoints/checkpoint_episode_50.pkl \
+  --load_checkpoint exp/train/train-2026-02-14-1230/checkpoints/checkpoint_episode_50.pkl \
   --max_episodes 100
 ```
 
@@ -603,68 +603,24 @@ echo "=== Performance-Based ==="
 cat exp/comparison/performance_based/overall/results.json | jq '.economic_metrics'
 ```
 
-#### 方案 2: 使用对比脚本（推荐）
+#### 方案 2: 使用内置 parity/gate 工具
 
-创建对比脚本 `scripts/compare_experiments.py`:
-
-```python
-import json
-import sys
-from pathlib import Path
-
-def compare_experiments(exp1_dir, exp2_dir):
-    """对比两个实验的结果"""
-
-    # 加载结果
-    with open(f'{exp1_dir}/overall/results.json') as f:
-        results1 = json.load(f)
-    with open(f'{exp2_dir}/overall/results.json') as f:
-        results2 = json.load(f)
-
-    # 对比关键指标
-    metrics = ['success_rate', 'average_quality', 'gini_coefficient']
-
-    print("=" * 60)
-    print(f"{'Metric':<25} {'Baseline':<15} {'Performance-Based':<15} {'Δ%':<10}")
-    print("=" * 60)
-
-    for metric in metrics:
-        val1 = results1['performance_metrics'].get(metric, 0)
-        val2 = results2['performance_metrics'].get(metric, 0)
-        delta = ((val2 - val1) / val1 * 100) if val1 != 0 else 0
-
-        print(f"{metric:<25} {val1:<15.4f} {val2:<15.4f} {delta:+.2f}%")
-
-    print("=" * 60)
-
-    # 经济指标对比
-    print("\nEconomic Metrics:")
-    print("=" * 60)
-
-    econ_metrics = ['platform_earnings', 'agent_total_earnings', 'gini_coefficient']
-
-    for metric in econ_metrics:
-        val1 = results1['economic_metrics'].get(metric, 0)
-        val2 = results2['economic_metrics'].get(metric, 0)
-        delta = ((val2 - val1) / val1 * 100) if val1 != 0 else 0
-
-        print(f"{metric:<25} {val1:<15.2f} {val2:<15.2f} {delta:+.2f}%")
-
-    print("=" * 60)
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python scripts/compare_experiments.py <exp1_dir> <exp2_dir>")
-        sys.exit(1)
-
-    compare_experiments(sys.argv[1], sys.argv[2])
-```
-
-运行对比：
 ```bash
-python scripts/compare_experiments.py \
-  exp/comparison/baseline \
-  exp/comparison/performance_based
+# 抽取 Oikos run 的对标指标
+python scripts/m7_holos_parity.py extract-oikos \
+  --run-dir exp/comparison/baseline \
+  --out exp/comparison/baseline/overall/oikos_parity_metrics.json
+
+python scripts/m7_holos_parity.py extract-oikos \
+  --run-dir exp/comparison/performance_based \
+  --out exp/comparison/performance_based/overall/oikos_parity_metrics.json
+
+# 与 Holos baseline 比较（可选）
+python scripts/m7_holos_parity.py compare \
+  --oikos exp/comparison/performance_based/overall/oikos_parity_metrics.json \
+  --holos benchmarks/holos_parity/holos_baseline_seed42.json \
+  --thresholds benchmarks/holos_parity/thresholds.yaml \
+  --report exp/comparison/performance_based/overall/holos_parity_report.json
 ```
 
 **示例输出**:
@@ -878,13 +834,13 @@ Demo 运行完成后，您可以：
 
 ## 附录: Demo 脚本参数
 
-### run_chat.sh 参数
+### oikos.cli chat 参数
 
 ```bash
 python -m oikos.cli chat --recipe TEMPLATE [OPTIONS]
 
 OPTIONS:
-  --output-dir DIR    输出目录（默认: exp/chat_runs）
+  --output-dir DIR    输出目录（默认: exp/chat）
   --run-id ID         自定义运行 ID（默认: 自动生成）
   --config FILE       配置文件路径（默认: conf/chat_config.yaml）
   --help              显示帮助信息
@@ -892,13 +848,13 @@ OPTIONS:
 
 ---
 
-### run_test.sh 参数
+### oikos.cli test 参数
 
 ```bash
 python -m oikos.cli test --recipe TEMPLATE [OPTIONS]
 
 OPTIONS:
-  --output-dir DIR      输出目录（默认: exp/test_runs）
+  --output-dir DIR      输出目录（默认: exp/test）
   --run-id ID           自定义运行 ID（默认: 自动生成）
   --max_episodes N      运行任务数量（默认: 10）
   --config FILE         配置文件路径（默认: conf/test_config.yaml）
@@ -907,13 +863,13 @@ OPTIONS:
 
 ---
 
-### run_train.sh 参数
+### oikos.cli train 参数
 
 ```bash
 python -m oikos.cli train --recipe TEMPLATE [OPTIONS]
 
 OPTIONS:
-  --output-dir DIR          输出目录（默认: exp/train_runs）
+  --output-dir DIR          输出目录（默认: exp/train）
   --run-id ID               自定义运行 ID（默认: 自动生成）
   --max_episodes N          训练轮数（默认: 50）
   --config FILE             配置文件路径（默认: conf/train_config.yaml）

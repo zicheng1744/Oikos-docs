@@ -148,7 +148,7 @@ PluginNotFoundError: Plugin 'your_plugin_name' not registered
 **1. 检查插件是否注册**
 ```python
 # 在Python REPL中
-from core.plugin_registry import PluginRegistry
+from core.registry import PluginRegistry
 print(PluginRegistry._plugins.keys())
 ```
 
@@ -162,7 +162,7 @@ from modules.phase5.settlement_modules import YourPlugin
 ```python
 # modules/phase5/settlement_modules.py (底部)
 
-from core.plugin_registry import PluginRegistry
+from core.registry import PluginRegistry
 
 # 添加调试打印
 print("Registering YourPlugin...")
@@ -197,12 +197,13 @@ python -c "import yaml; print(yaml.safe_load(open('recipes/TEMPLATE/conf/test_co
 ```python
 # cli.py / 内部执行器
 
-from core.config_manager import ConfigManager
+import yaml
+from pathlib import Path
 
-config = ConfigManager.load("recipes/TEMPLATE/conf/test_config.yaml")
+config = yaml.safe_load(Path("recipes/TEMPLATE/conf/test_config.yaml").read_text(encoding="utf-8"))
 print("Loaded config:")
 import json
-print(json.dumps(config, indent=2))
+print(json.dumps(config, indent=2, ensure_ascii=False))
 ```
 
 **3. 在插件中打印配置**
@@ -364,7 +365,7 @@ AssertionError: assert 150.5 == 123.5
 
 **1. 使用 pytest 的 `-vv` 选项**
 ```bash
-pytest tests/test_phase5/test_settlement.py -vv
+pytest tests/modules -k settlement -vv
 ```
 
 **2. 打印中间值**
@@ -395,7 +396,7 @@ assert updated_state.ledger['agent-001'] == pytest.approx(123.5, abs=0.01)
 **4. 只运行失败的测试**
 ```bash
 # 运行特定测试
-pytest tests/test_phase5/test_settlement.py::test_high_quality -v
+pytest tests/modules -k high_quality -v
 
 # 运行上次失败的测试
 pytest --lf
@@ -407,7 +408,7 @@ pytest --lf
 
 ### 配置日志
 
-**文件**: `core/logging_config.py`
+**文件**: `scripts/start_fullchain.sh`（日志目录约定） + `runtime/logs/*.log`（运行产物）
 
 ```python
 import logging

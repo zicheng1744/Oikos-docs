@@ -157,10 +157,10 @@ mypy oikos/
 cd recipes/TEMPLATE
 
 # Chat模式 (快速测试)
-bash run_chat.sh
+bash oikos.cli chat
 
 # Test模式 (完整测试)
-bash run_test.sh --max_episodes 10
+bash oikos.cli test --max_episodes 10
 ```
 
 ### 单独启动服务
@@ -173,10 +173,10 @@ python -m oikos.services.api.main --port 8000
 python -m oikos.services.nvwa.main --port 10000
 
 # Retrieval服务
-python -m oikos.services.retrieval.main --port 9000
+python -m oikos.services.retrieval.main --port 10003
 
 # Evaluator服务
-python -m oikos.services.evaluator.main --port 9001
+python -m oikos.services.evaluator.main --port 10002
 ```
 
 ---

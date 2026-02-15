@@ -39,6 +39,8 @@ phase4_execution:
 - 旧文档中的 `langgraph_executor` / `simple_executor` 插件名不是当前插件注册名。
 - 当前实现是六个子模块组合，不是单一 executor 插件。
 - `anomaly_injection` 已接入，但默认可通过 `enable_injection: false` 关闭。
+- 当前 `process_execution(assignment=...)` 已接收 Phase 3 分配结果，但默认执行链路尚未对 winner hub 做强绑定（该项已列入 TODO）。
+- 由于默认 `num_hubs: 1`，日常默认配置下 Phase3/Phase4 语义不会出现多 hub 竞争引发的偏差。
 
 ## 真实输出
 

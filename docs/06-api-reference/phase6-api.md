@@ -15,7 +15,7 @@ Phase 6 (反馈与排名) 的完整API参考文档。
 
 ## AgentEvalInterface
 
-**文件**: `interfaces/phase6_feedback/base.py`
+**文件**: `interfaces/phase6_feedback/agent_eval.py + interfaces/phase6_feedback/observation.py`
 
 ### 接口定义
 

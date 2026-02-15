@@ -27,6 +27,8 @@ phase3_allocation:
 
 - 分配逻辑走 `task_orchestrator`（竞价+拍卖），不是旧文档中的 `rank_based_allocator` / `hybrid_allocator` 命名体系。
 - Phase 6 的 rank 会影响后续行为，但入口是 orchestrator/marketplace 机制，不是独立 `allocator` 插件家族。
+- 当前默认配置是 **单 orchestrator**（`num_hubs: 1`），因此默认只会有 1 份 bid；多 orchestrator 仅作为扩展场景。
+- 当使用 `default_task_orchestrator` 时，Phase 3 默认路径按单 orchestrator 执行（即使 marketplace 注册了多个 hub，也只取一个）。
 
 ## 真实输出
 

@@ -16,7 +16,7 @@ Oikos 系统中使用的公共数据类型定义。
 
 ## EconomicState
 
-**文件**: `interfaces/types.py`
+**文件**: `interfaces/common/types.py`
 
 ### 类定义
 
@@ -203,7 +203,7 @@ class EconomicState:
 
 ## AgentRanks
 
-**文件**: `interfaces/types.py`
+**文件**: `interfaces/common/types.py`
 
 ### 类定义
 
@@ -350,7 +350,7 @@ class AgentRanks:
 
 ## ConversationContext
 
-**文件**: `interfaces/types.py`
+**文件**: `interfaces/common/types.py`
 
 ### 类定义
 
@@ -407,7 +407,7 @@ class ConversationContext:
 
 ## TaskData
 
-**文件**: `interfaces/types.py`
+**文件**: `interfaces/common/types.py`
 
 ### 类定义
 
@@ -495,7 +495,7 @@ class TaskData:
 
 ## MetricsData
 
-**文件**: `interfaces/types.py`
+**文件**: `interfaces/common/types.py`
 
 ### 类定义
 

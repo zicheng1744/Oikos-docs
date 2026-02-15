@@ -241,7 +241,7 @@ def test_settlement_updates_ranking():
 # tests/functional/test_phase5_full.py
 
 import pytest
-from core.plugin_factory import PluginFactory
+from oikos.core.factory import PluginFactory
 from interfaces.types import EconomicState
 
 def test_phase5_full_pipeline():

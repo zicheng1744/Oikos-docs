@@ -62,6 +62,15 @@ bash scripts/start_fullchain.sh stop
 bash scripts/start_fullchain.sh restart
 ```
 
+本地一键拓扑（推荐）：
+
+```bash
+bash scripts/local_topology.sh up
+bash scripts/local_topology.sh status
+bash scripts/local_topology.sh smoke
+bash scripts/local_topology.sh down
+```
+
 ## 5. 健康检查地址（当前默认）
 
 - API: `http://127.0.0.1:8000/nvwa/health`
@@ -85,9 +94,13 @@ bash scripts/start_fullchain.sh restart
 - `overall/summary.json`
 - `overall/phase_trace.jsonl`
 - `runtime/logs/`
+- `runtime/planning_memory/`（PlanningAgent 的 run 级记忆目录）
 
 ## 7. 注意事项
 
 - 本地无 Docker 时，请在 YAML 中设置 `runtime.workspace_backend: host`。
 - chat 模式为交互式；输入 `/exit` 可退出。
 - 当前没有官方 `compare_experiments.py` 脚本。
+- 默认配置为单 orchestrator（`num_hubs: 1`）；如需多 orchestrator 竞价实验，请显式在 recipe 中调大该值。
+- 启动链路默认会执行 `card/route/a2a` 三段门禁探测；失败会在启动阶段直接报错。
+- Holos 对标回归可使用 `scripts/run_holos_parity_gate.sh`（基于 `scripts/m7_holos_parity.py` 与 `benchmarks/holos_parity/thresholds.yaml`）。

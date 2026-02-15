@@ -10,10 +10,7 @@
 - [core-api.md](core-api.md) - 核心系统API (插件系统、配置管理、工厂)
 
 ### Phase接口API
-- [phase1-api.md](phase1-api.md) - Phase 1: 初始化接口
-- [phase2-api.md](phase2-api.md) - Phase 2: 任务创建接口
-- [phase3-api.md](phase3-api.md) - Phase 3: 任务分配接口
-- [phase4-api.md](phase4-api.md) - Phase 4: 任务执行接口
+- [phase1-4-api.md](phase1-4-api.md) - Phase 1-4: 初始化/创建/分配/执行接口
 - [phase5-api.md](phase5-api.md) - Phase 5: 清结算接口
 - [phase6-api.md](phase6-api.md) - Phase 6: 反馈排名接口
 - [phase7-api.md](phase7-api.md) - Phase 7: 资金池管理接口
@@ -31,11 +28,11 @@
 | 功能 | 接口文档 | 实现示例 |
 |------|---------|---------|
 | 插件系统 | [core-api.md#BasePlugin](core-api.md) | `modules/phase5/settlement_modules.py` |
-| 任务定价 | [phase2-api.md#TaskPricing](phase2-api.md) | `modules/phase2/creation_modules.py` |
-| Worker分配 | [phase3-api.md#TaskAllocator](phase3-api.md) | `modules/phase3/allocation_modules.py` |
+| 任务定价 | [phase1-4-api.md#phase-2-任务创建](phase1-4-api.md) | `modules/phase2/task_pricing_modules.py` |
+| Worker分配 | [phase1-4-api.md#phase-3-任务分配](phase1-4-api.md) | `modules/phase3/task_orchestrator_modules.py` |
 | 结算机制 | [phase5-api.md#SettlementInterface](phase5-api.md) | `modules/phase5/settlement_modules.py` |
 | 排名算法 | [phase6-api.md#AgentEvalInterface](phase6-api.md) | `modules/phase6/feedback_modules.py` |
-| 资金池管理 | [phase7-api.md#PoolManager](phase7-api.md) | `modules/phase7/pool_modules.py` |
+| 资金池管理 | [phase7-api.md](phase7-api.md) | `modules/phase7/pool_modules.py` |
 
 ---
 

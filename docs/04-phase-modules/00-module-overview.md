@@ -102,3 +102,5 @@ Oikos 在一次 `train/test/chat` 运行中的主链路：
 ## 5. 说明
 
 本文档只描述当前仓库已接入并可运行的模块，不再列出历史版本中未接入的旧插件名或伪代码接口。
+- 当前默认配置采用单 orchestrator（`num_hubs: 1`）。
+- Phase3 的 winner-hub 与 Phase4 执行上下文“强绑定”仍在规划中；现阶段默认通过单 orchestrator 降低语义偏差。

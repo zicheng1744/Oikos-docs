@@ -15,7 +15,7 @@ Phase 5 (清结算) 的完整API参考文档。
 
 ## ResultEvalInterface
 
-**文件**: `interfaces/phase5_settlement/base.py`
+**文件**: `interfaces/phase5_settlement/result_eval.py + interfaces/phase5_settlement/settlement.py`
 
 ### 接口定义
 
@@ -75,7 +75,7 @@ class ResultEvalInterface(ABC):
 
 ## SettlementInterface
 
-**文件**: `interfaces/phase5_settlement/base.py`
+**文件**: `interfaces/phase5_settlement/result_eval.py + interfaces/phase5_settlement/settlement.py`
 
 ### 接口定义
 

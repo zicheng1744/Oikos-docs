@@ -110,11 +110,11 @@ class YourModuleInterface(ABC):
 ### 示例: 自定义结算接口
 
 ```python
-# interfaces/phase5_settlement/base.py
+# interfaces/phase5_settlement/settlement.py
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any
-from interfaces.types import EconomicState
+from oikos.interfaces.common.types import EconomicState
 
 class SettlementInterface(ABC):
     """
@@ -162,8 +162,8 @@ class SettlementInterface(ABC):
 **文件**: `modules/phase{N}/{name}_modules.py`
 
 ```python
-from core.plugin_system import BasePlugin
-from interfaces.phase{N}_{name}.base import YourModuleInterface
+from oikos.core.plugin import BasePlugin
+from oikos.interfaces.phase{N}_{name}.<interface_file> import YourModuleInterface
 from typing import Dict, Any
 
 class CustomPluginName(BasePlugin, YourModuleInterface):
@@ -215,9 +215,9 @@ class CustomPluginName(BasePlugin, YourModuleInterface):
 ```python
 # modules/phase5/settlement_modules.py
 
-from core.plugin_system import BasePlugin
-from interfaces.phase5_settlement.base import SettlementInterface
-from interfaces.types import EconomicState
+from oikos.core.plugin import BasePlugin
+from oikos.interfaces.phase5_settlement.settlement import ISettlement
+from oikos.interfaces.common.types import EconomicState
 from typing import Dict, Any, List
 import logging
 
@@ -352,7 +352,7 @@ class PerformanceBasedSettlement(BasePlugin, SettlementInterface):
 ```python
 # modules/phase5/settlement_modules.py (底部)
 
-from core.plugin_registry import PluginRegistry
+from core.registry import PluginRegistry
 
 # 注册插件
 PluginRegistry.register("performance_based_settlement", PerformanceBasedSettlement)
@@ -360,10 +360,10 @@ PluginRegistry.register("performance_based_settlement", PerformanceBasedSettleme
 
 **方式2: 集中注册**
 
-在 `core/plugin_registry.py` 中导入并注册:
+在 `core/registry.py` 中导入并注册:
 
 ```python
-# core/plugin_registry.py
+# core/registry.py
 
 from modules.phase5.settlement_modules import PerformanceBasedSettlement
 
@@ -378,7 +378,7 @@ class PluginRegistry:
 
 ```python
 # 验证插件是否注册成功
-python -c "from core.plugin_registry import PluginRegistry; \
+python -c "from core.registry import PluginRegistry; \
            print('performance_based_settlement' in PluginRegistry._plugins)"
 ```
 
@@ -417,12 +417,12 @@ python -c "import yaml; yaml.safe_load(open('recipes/TEMPLATE/conf/test_config.y
 
 ### 单元测试
 
-**文件**: `tests/test_phase5/test_custom_settlement.py`
+**文件**: `tests/modules/phase*/test_*.py`（按当前测试目录组织）
 
 ```python
 import pytest
 from modules.phase5.settlement_modules import PerformanceBasedSettlement
-from interfaces.types import EconomicState
+from oikos.interfaces.common.types import EconomicState
 
 def test_performance_based_settlement_high_quality():
     """测试高质量任务的结算"""
@@ -545,13 +545,13 @@ def test_performance_based_settlement_no_participants():
 
 ```bash
 # 运行单个测试文件
-pytest tests/test_phase5/test_custom_settlement.py -v
+pytest tests/modules -k settlement -v
 
 # 运行特定测试
-pytest tests/test_phase5/test_custom_settlement.py::test_performance_based_settlement_high_quality -v
+pytest tests/modules -k performance_based_settlement_high_quality -v
 
 # 运行所有Phase 5测试
-pytest tests/test_phase5/ -v
+pytest tests/modules -v
 ```
 
 ### 集成测试
@@ -575,7 +575,7 @@ python -m oikos.cli run --mode test \
 #### 1. 定义接口 (如果需要)
 
 ```python
-# interfaces/phase6_feedback/base.py (已存在,跳过)
+# interfaces/phase6_feedback/agent_eval.py (已存在,跳过)
 ```
 
 #### 2. 实现插件
@@ -583,14 +583,14 @@ python -m oikos.cli run --mode test \
 ```python
 # modules/phase6/feedback_modules.py
 
-from core.plugin_system import BasePlugin
-from interfaces.phase6_feedback.base import AgentEvalInterface
+from oikos.core.plugin import BasePlugin
+from oikos.interfaces.phase6_feedback.agent_eval import IAgentEval
 from typing import Dict, List
 import logging
 
 logger = logging.getLogger(__name__)
 
-class RecentSuccessRateRanking(BasePlugin, AgentEvalInterface):
+class RecentSuccessRateRanking(BasePlugin, IAgentEval):
     """
     基于近期成功率的排名算法
 
@@ -659,7 +659,7 @@ class RecentSuccessRateRanking(BasePlugin, AgentEvalInterface):
 ```python
 # modules/phase6/feedback_modules.py (底部)
 
-from core.plugin_registry import PluginRegistry
+from core.registry import PluginRegistry
 PluginRegistry.register("recent_success_rate_ranking", RecentSuccessRateRanking)
 ```
 
@@ -794,7 +794,7 @@ KeyError: 'your_plugin_name'
 **解决**:
 ```python
 # 在模块底部添加
-from core.plugin_registry import PluginRegistry
+from core.registry import PluginRegistry
 PluginRegistry.register("your_plugin_name", YourPluginClass)
 ```
 
@@ -902,7 +902,7 @@ class AdvancedRanking(BasePlugin, AgentEvalInterface):
 
     def initialize(self, config: Dict) -> None:
         # 获取其他插件的引用 (通过Factory)
-        from core.plugin_factory import PluginFactory
+        from oikos.core.factory import PluginFactory
         self.factory = PluginFactory.get_instance()
 
     def evaluate_agents(self, agents, episode_results):
@@ -965,9 +965,9 @@ class PersistentPlugin(BasePlugin, YourInterface):
 
 ```python
 import asyncio
-from core.plugin_system import BaseAsyncPlugin
+from oikos.core.plugin import BasePlugin
 
-class AsyncPlugin(BaseAsyncPlugin, YourInterface):
+class AsyncPlugin(BasePlugin, YourInterface):
     """异步插件示例"""
 
     async def initialize(self, config: Dict) -> None:
@@ -991,7 +991,7 @@ class AsyncPlugin(BaseAsyncPlugin, YourInterface):
 开发时,支持插件热重载避免重启进程。
 
 ```python
-# core/plugin_registry.py
+# core/registry.py
 
 class PluginRegistry:
     @classmethod
@@ -1016,7 +1016,7 @@ class PluginRegistry:
 
 **使用**:
 ```python
-from core.plugin_registry import PluginRegistry
+from core.registry import PluginRegistry
 
 # 修改插件代码后
 PluginRegistry.reload_plugin("your_plugin_name")

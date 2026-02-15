@@ -54,7 +54,7 @@ EOF_CFG
 ```
 
 说明：
-- `run_test.sh` 内部会先加载 `recipes/TEMPLATE/conf/*.yaml`
+- `oikos.cli test` 内部会先加载 `recipes/TEMPLATE/conf/*.yaml`
 - 通过额外 `--config` 传入本文件可覆盖默认项
 
 ## 3) 运行实验
