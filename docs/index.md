@@ -9,6 +9,9 @@ hero:
     - theme: brand
       text: 快速开始
       link: /01-getting-started/00-overview
+    - theme: brand
+      text: 运行 Demo
+      link: /07-demos-and-tutorials/02-local-good-vs-bad-agent-demo
     - theme: alt
       text: 查看架构
       link: /03-architecture/01-system-overview
@@ -46,6 +49,7 @@ features:
 
 ### 我是研究人员
 - [5分钟快速上手](/01-getting-started/02-quick-start) - 运行第一个实验
+- [双 Agent 对抗 Demo（本地）](/07-demos-and-tutorials/02-local-good-vs-bad-agent-demo) - 一键跑 good vs bad
 - [数据集准备](/02-user-guide/02-dataset-preparation) - 准备您的数据
 - [经济机制选择](/02-user-guide/07-economic-mechanisms) - 选择合适的机制
 
