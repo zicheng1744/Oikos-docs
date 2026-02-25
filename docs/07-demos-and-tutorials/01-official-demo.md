@@ -2,6 +2,9 @@
 
 本指南将带您运行 Oikos 的官方 Demo，快速体验系统的核心功能。
 
+> 如果你要复现“1 个 good agent + 1 个 bad agent”的本地对抗实验，请直接看：
+> [双 Agent 对抗 Demo（本地）](./02-local-good-vs-bad-agent-demo.md)
+
 ---
 
 ## Demo 概述

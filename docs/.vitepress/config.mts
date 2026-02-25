@@ -121,7 +121,8 @@ export default defineConfig({
         {
           text: '演示与教程',
           items: [
-            { text: '官方 Demo 运行指南', link: '/07-demos-and-tutorials/01-official-demo' }
+            { text: '官方 Demo 运行指南', link: '/07-demos-and-tutorials/01-official-demo' },
+            { text: '双 Agent 对抗 Demo（本地）', link: '/07-demos-and-tutorials/02-local-good-vs-bad-agent-demo' }
           ]
         }
       ]
